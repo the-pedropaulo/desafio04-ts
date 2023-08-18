@@ -32,5 +32,13 @@ export class UserService {
     getAllUsers = () => {
         return this.db
     }
+
+    deleteUser = (user: User) => {
+        db.filter(function(element) { 
+            return element.email != user.email; 
+        });
+        console.log('Usuário deletado', this.db)
+        return true
+    }
 }
 
