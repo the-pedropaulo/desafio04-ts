@@ -13,35 +13,29 @@ export class UserController {
     createUser = (request: Request, response: Response): Response => {
         const user = request.body
 
-        if(!user.name){
-            return response.status(400).json({ message: 'Bad request! Name is required.'})
+        if(!user.firstName || !user.lastName || !user.age) {
+            return response.status(400).json({ message: 'Bad request! All params are required.'})
         }
 
-        if(!user.email) {
-            return response.status(400).json({ message: 'Bad request! E-mail is required.'})
-        }
-
-        this.userService.createUser(user.name, user.email)
+        this.userService.createUser(user.firstName, user.lastName, user.age)
         return response.status(201).json({ message: 'Usuário criado'})
     }
 
-    getAllUsers = (request: Request, response: Response) => {
-        const users = this.userService.getAllUsers()
-        return response.status(200).json(users)
+    getUser = async (request: Request, response: Response): Promise<Response> => {
+        const user = request.body;
+        const res = await this.userService.getUser(user.id);
+        return response.status(200).json(res)
     }
+
+
     
     deleteUser = (request: Request, response: Response) => {
         const user = request.body
 
-        if(!user.name){
-            return response.status(400).json({ message: 'Bad request! Name is required.'})
+        if(!user.firstName || !user.lastName || !user.age) {
+            return response.status(400).json({ message: 'Bad request! All params are required.'})
         }
 
-        if(!user.email) {
-            return response.status(400).json({ message: 'Bad request! E-mail is required.'})
-        }
-
-        this.userService.createUser(user.name, user.email)
         return response.status(200).json({ message: 'Usuário deletado'})
     }
 }

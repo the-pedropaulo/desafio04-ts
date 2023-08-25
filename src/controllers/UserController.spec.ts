@@ -3,12 +3,18 @@ import { UserService } from '../services/UserService'
 import { Request } from 'express'
 import { makeMockResponse } from "../__mocks__/mockResponse.mock";
 
-describe('UserController', () => {
-    const mockUserService: Partial<UserService> = {
-        createUser: jest.fn()
+jest.mock('../services/UserService', () => {
+    return {
+        UserService: jest.fn().mockImplementation(() => {
+            return {
+                createUser: jest.fn()
+            }
+        })
     }
-    
-    const userController = new UserController(mockUserService as UserService);
+});
+
+describe('UserController', () => {
+    const userController = new UserController();
     
     const mockResponse = makeMockResponse()
 
@@ -25,11 +31,12 @@ describe('UserController', () => {
         expect(mockResponse.state.json).toMatchObject({ message: 'Usuário criado' })
     })
 
-    it('Não deve criar usuário caso não informe o nome', () => {
+    it('Deve retornar um erro caso não informe o firstName', () => {
         const mockRequest = {
             body: {
-                name: '',
-                email: 'nath@test.com'
+                firstName: '',
+                lastName: 'fjdhfj',
+                age: 25
             }
         } as Request
 
@@ -37,11 +44,12 @@ describe('UserController', () => {
         expect(mockResponse.state.status).toBe(400)
     })
 
-    it('Não deve criar usuário caso não informe o e-mail', () => {
+    it('Deve retornar um erro caso não informe o lastName', () => {
         const mockRequest = {
             body: {
-                name: 'Nath',
-                email: ''
+                firstName: 'Nath',
+                lastName: '',
+                age: 25
             }
         } as Request
 
@@ -52,8 +60,9 @@ describe('UserController', () => {
     it('Deve deletar o usuário', () => {
         const mockRequest = {
             body:  {
-                name: "Joana",
-                email: "joana@dio.com",
+                firstName: 'Nath',
+                lastName: 'fdjfhdjdsfd',
+                age: 25
             }
         } as Request
 
@@ -61,16 +70,5 @@ describe('UserController', () => {
         expect(mockResponse.state.status).toBe(200)
     })
 
-    it('Não deve deletar o usuário caso não informe o e-mail', () => {
-        const mockRequest = {
-            body:  {
-                name: "Joana",
-                email: "",
-            }
-        } as Request
-
-        userController.deleteUser(mockRequest, mockResponse)
-        expect(mockResponse.state.status).toBe(400)
-    })
 
 })

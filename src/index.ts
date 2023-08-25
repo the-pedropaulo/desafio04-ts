@@ -1,13 +1,18 @@
-import express, { Request, Response } from 'express';
-import { router } from './routes';
+import express, { Request, Response } from "express";
+import { router } from "./routes";
+import "reflect-metadata"
+import { AppDataSource } from "./data-source";
+
 
 const server = express();
 
-server.use(express.json())
-server.use(router)
+server.use(express.json());
+server.use(router);
 
-server.get('/', (request: Request, response: Response) => {
-    return response.status(200).json({ message: 'DioBank API' })
+server.get('/api/', (req: Request, res: Response) => {
+    return res.status(200).json({ message: 'OK' });
+});
+
+server.listen(5000, () => {
+    console.log('Server running on port 5000');
 })
-
-server.listen(5000, () => console.log('Server on'))
