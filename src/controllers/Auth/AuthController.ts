@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { sign } from 'jsonwebtoken';
+import { UserService } from '../../services/UserService';
 
 const user = {
   id: 3,
@@ -10,21 +11,19 @@ const user = {
 
 export class AuthController {
 
-    login = (request: Request, response: Response): Response => {
-      const payload = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        age: user.age
-      }
-      
-      const tokenKey = '123456789'
-  
-      const tokenOptions = {
-        subject: String(user.id)
-      }
-      const token = sign(payload, tokenKey, tokenOptions);
+  constructor(private userService: UserService = new UserService()) {
+      this.userService = userService;
+  }
 
+    login = async (request: Request, response: Response): Promise<Response> => {
+      const { email, password } = request.body;
+      
+      try {
+        const token = await this.userService.getToken(email, password);
         return response.status(200).json({token})
+      } catch (error) {
+        return response.status(500).json({message: error});
+      }
     }
 
 }

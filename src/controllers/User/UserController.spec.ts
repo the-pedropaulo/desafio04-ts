@@ -1,9 +1,8 @@
 import { UserController } from "./UserController";
-import { UserService } from '../services/UserService'
 import { Request } from 'express'
-import { makeMockResponse } from "../__mocks__/mockResponse.mock";
+import { makeMockResponse } from "../../__mocks__/mockResponse.mock";
 
-jest.mock('../services/UserService', () => {
+jest.mock('../../services/UserService', () => {
     return {
         UserService: jest.fn().mockImplementation(() => {
             return {
@@ -21,8 +20,12 @@ describe('UserController', () => {
     it('Deve adicionar um novo usuário', () => {
         const mockRequest = {
             body: {
-                name: 'Nath',
-                email: 'nath@test.com'
+                firstName: 'Pedro',
+                lastName: 'Paulo',
+                email: 'pedro@example.com',
+                password: 'password',
+                age: 25
+
             }
         } as Request
 

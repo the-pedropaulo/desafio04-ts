@@ -11,6 +11,8 @@ describe('UserRepository', () => {
     id: 1,
     firstName: 'username',
     lastName: 'password',
+    email: 'pedro98seabra@gmail.com',
+    password: '123456',
     age: 23
   }
 

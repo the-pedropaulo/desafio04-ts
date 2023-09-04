@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { UserService } from '../services/UserService'
+import { UserService } from '../../services/UserService'
 
 export class UserController {
     userService: UserService
@@ -13,11 +13,11 @@ export class UserController {
     createUser = (request: Request, response: Response): Response => {
         const user = request.body
 
-        if(!user.firstName || !user.lastName || !user.age) {
+        if(!user.firstName || !user.lastName || !user.email || !user.password || !user.age) {
             return response.status(400).json({ message: 'Bad request! All params are required.'})
         }
 
-        this.userService.createUser(user.firstName, user.lastName, user.age)
+        this.userService.createUser(user.firstName, user.lastName, user.email, user.password, user.age)
         return response.status(201).json({ message: 'Usuário criado'})
     }
 
