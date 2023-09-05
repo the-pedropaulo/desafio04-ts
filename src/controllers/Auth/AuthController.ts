@@ -22,7 +22,7 @@ export class AuthController {
         const token = await this.userService.getToken(email, password);
         return response.status(200).json({token})
       } catch (error) {
-        return response.status(500).json({message: error});
+        return response.status(500).json({message: 'Email or passsword invalid!'});
       }
     }
 

@@ -22,13 +22,16 @@ export class UserController {
     }
 
     getUser = async (request: Request, response: Response): Promise<Response> => {
-        const user = request.body;
-        const res = await this.userService.getUser(user.id);
-        return response.status(200).json(res)
+        const { userId }= request.params;
+        const user = await this.userService.getUser(userId);
+        return response.status(200).json({
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            email: user?.email,
+            age: user?.age
+        })
     }
 
-
-    
     deleteUser = (request: Request, response: Response) => {
         const user = request.body
 
